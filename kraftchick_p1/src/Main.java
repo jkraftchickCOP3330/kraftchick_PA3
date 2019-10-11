@@ -9,12 +9,33 @@ public class Main
 	public static void main(String[] args)
 	{
 		boolean running = true;
+		int level = 1;
 		while (running)
 		{
+			System.out.print("Please select a level (1-4, 0 to quit): ");
+			do
+			{
+				level = scan.nextInt();
+				if (!levelValid(level))
+				{
+					System.out.print("Please pick a valid level (1-4, 0 to quit): ");
+				}
+				else if (level == 0)
+				{
+					running = false;
+				}
+			}
+			while (!levelValid(level));
+
+			if (!running)
+			{
+				break;
+			}
+
 			double score = 0;
 			for (int i = 0; i < 10; i++)
 			{
-				score += (AskQuestion() ? 1 : 0);
+				score += (AskQuestion(level) ? 1 : 0);
 			}
 			score /= 10;
 
@@ -26,10 +47,10 @@ public class Main
 
 	}
 
-	private static boolean AskQuestion()
-    {
-        int num1 = random.nextInt(10);
-        int num2 = random.nextInt(10);
+	private static boolean AskQuestion(int level)
+	{
+        int num1 = random.nextInt((int)Math.pow(10, level));
+        int num2 = random.nextInt((int)Math.pow(10, level));
         int result = num1 * num2;
         double userInput = -1;
 
@@ -80,4 +101,9 @@ public class Main
 
         return false;
     }
+
+    private static boolean levelValid(int level)
+	{
+		return ((level < 0 || level > 4) ? false : true);
+	}
 }
