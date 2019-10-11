@@ -3,42 +3,44 @@ import java.util.Scanner;
 
 public class Main
 {
+    private static SecureRandom random = new SecureRandom();
+    private static Scanner scan = new Scanner(System.in);
 
 	public static void main(String[] args)
 	{
-		SecureRandom random = new SecureRandom();
-		Scanner scan = new Scanner(System.in);
-
-		int num1, num2, product, userInput;
-		boolean correct = false;
-
-
-		num1 = random.nextInt(10);
-		num2 = random.nextInt(10);
-		product = num1 * num2;
-		userInput = -1;
-
-		while (!correct)
+		boolean running = true;
+		while (running)
 		{
-			System.out.print("How much is " + num1 + " times " + num2 + "? ");
-			userInput = scan.nextInt();
+			double score = 0;
+			for (int i = 0; i < 10; i++)
+			{
+				score += (AskQuestion() ? 1 : 0);
+			}
+			score /= 10;
 
-			if (userInput == product)
-			{
-				Correct();
-				correct = true;
-				break;
-			}
-			else
-			{
-				Wrong();
-			}
+			System.out.println((score < .75) ?
+					"Please ask your teacher for extra help." :
+					"Congratulations, you are ready to go to the next level!");
+			System.out.println("Restarting");
 		}
+
 	}
 
-    private static void Correct()
+	private static boolean AskQuestion()
     {
-        SecureRandom random = new SecureRandom();
+        int num1 = random.nextInt(10);
+        int num2 = random.nextInt(10);
+        int result = num1 * num2;
+        double userInput = -1;
+
+		System.out.print("How much is " + num1 + " times " + num2 + "? ");
+		userInput = scan.nextInt();
+
+		return ((userInput == result) ? Correct() : Wrong());
+    }
+
+    private static boolean Correct()
+    {
         switch (random.nextInt(4))
         {
             case 0:
@@ -54,11 +56,12 @@ public class Main
                 System.out.println("Keep up the good work!");
                 break;
         }
+
+        return true;
     }
 
-    private static void Wrong()
+    private static boolean Wrong()
     {
-        SecureRandom random = new SecureRandom();
         switch (random.nextInt(4))
         {
             case 0:
@@ -74,5 +77,7 @@ public class Main
                 System.out.println("No. Keep trying.");
                 break;
         }
+
+        return false;
     }
 }
