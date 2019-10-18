@@ -19,18 +19,20 @@ public class Main
 			}
 			problemType = problemType();
 
-			double score = 0;
+			int score = 0;
 			for (int i = 0; i < 10; i++)
 			{
 				score += (AskQuestion(problemLevel, problemType) ? 1 : 0);
 			}
-			score /= 10;
 
-			System.out.printf("Your accuracy was %.2f%%%n", score);
-			System.out.println((score < .75) ?
-					"Please ask your teacher for extra help." :
-					"Congratulations, you are ready to go to the next level!");
-			System.out.println("Restarting");
+			System.out.printf("%n");
+			System.out.printf("You got %d correct and %d incorrect%n", score, 10 - score);
+			System.out.printf("Your accuracy was %d%%%n", score * 10);
+			System.out.printf((score < 7.5) ?
+					"Please ask your teacher for extra help.%n%n" :
+					"Congratulations, you are ready to go to the next level!%n%n");
+
+			problemLevel = restart();
 		}
 
 	}
@@ -163,5 +165,14 @@ public class Main
 		while (!typeValid(type));
 
 		return type;
+	}
+
+	private static int restart()
+	{
+		char status;
+		System.out.print("Would you like to restart? (y / n) ");
+
+		status = Character.toLowerCase(scan.next().charAt(0));
+		return ((status == 'y') ? 1 : 0);
 	}
 }
